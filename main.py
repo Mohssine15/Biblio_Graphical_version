@@ -298,7 +298,6 @@ class FenAjouterEmp(QWidget):
         self.lineEditNomAdh.clear()
         self.lineEditISBN.clear()
         self.lineEditDate.clear()
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow,self).__init__()
@@ -356,11 +355,11 @@ class MainWindow(QMainWindow):
         self.layout.addWidget(self.btnAjouterEmp, 1, 2)
         self.btnAjouterEmp.setIcon(QIcon('emprunt.png'))
         self.btnAjouterEmp.clicked.connect(self.btnAjouterEmpClicked)
-        self.btnAfficherEmp = QPushButton("  Afficher liste des livres",self.widget1)
+        self.btnAfficherEmp = QPushButton("  Afficher liste des emprunts",self.widget1)
         self.layout.addWidget(self.btnAfficherEmp, 2, 2)
         self.btnAfficherEmp.setIcon(QIcon('liste.jpg'))
         self.btnAfficherEmp.clicked.connect(self.btnAfficherEmpClicked)
-        self.btnSupprimerEmp = QPushButton("  Supprimer un livre",self.widget1)
+        self.btnSupprimerEmp = QPushButton("  Supprimer un emprunt",self.widget1)
         self.layout.addWidget(self.btnSupprimerEmp, 3, 2)
         self.btnSupprimerEmp.setIcon(QIcon('trash.png'))
 
@@ -396,9 +395,7 @@ bd = BdTables()
 app = QApplication([])
 # on créé une instance de la classe MainWindowBiblio()
 Fen_Principale = MainWindow()
-
 #on affiche la fenetre principale
 Fen_Principale.show()
-
 # on démarre l'application
 app.exec()
