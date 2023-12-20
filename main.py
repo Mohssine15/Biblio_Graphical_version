@@ -1,9 +1,9 @@
 import sqlite3
 import sys
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QCoreApplication
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QWidget, QLabel, QLineEdit, QPushButton, QApplication, QMessageBox, \
-    QHBoxLayout, QVBoxLayout, QGridLayout, QTableWidget, QTableWidgetItem
+    QGridLayout, QTableWidget, QTableWidgetItem
 
 #Création des tables de la base de données
 class BdTables:
@@ -70,7 +70,6 @@ class FenAfficherAdh(QWidget):
                 self.table.setItem(i, j, QTableWidgetItem(str(y)))
                 j = j + 1
             i = i + 1
-
 class FenAfficherLiv(QWidget):
     def __init__(self):
         super().__init__()
@@ -99,6 +98,52 @@ class FenAfficherLiv(QWidget):
         self.con = sqlite3.connect("mydb.db")
         self.cur = self.con.cursor()
         req = "SELECT * FROM livre"
+        self.cur.execute(req)
+        self.con.commit()
+        self.resultat = self.cur.fetchall()
+        print(self.resultat)
+        print(len(self.resultat))
+        self.table.setRowCount(len(self.resultat))
+        # self.table.setItem(0, 0, QTableWidgetItem('1'))
+        i = 0
+        for x in self.resultat:
+            # print(x)
+            # # print(i)
+            j = 0
+            for y in x:
+                # print("i = ", i, "j = ", j)
+                # print(y)
+                self.table.setItem(i, j, QTableWidgetItem(str(y)))
+                j = j + 1
+            i = i + 1
+class FenAfficherEmp(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.widget = QWidget(self)
+        self.widget.resize(500,300)
+        self.setWindowTitle("Liste des emprunts")
+        #création de Grid layout
+        self.layout = QGridLayout(self)
+        self.widget.setLayout(self.layout)
+        #création de labels
+        self.label1 = QLabel("Liste des emprunts",self.widget)
+        self.layout.addWidget(self.label1, 0, 0)
+        #création de table
+        self.table = QTableWidget(self.widget)
+        self.layout.addWidget(self.table, 1, 0)
+        self.table.setColumnCount(4)
+        # self.table.setRowCount(3)
+        self.table.setHorizontalHeaderLabels(["EmpruntID", "Titre", "Nom Adhérent", "ISBN", "Date"])
+        #Création de bouton --afficher la liste des adhérents---
+        self.btnAfficherEmp = QPushButton("  Afficher la liste des emprunts",self.widget)
+        self.layout.addWidget(self.btnAfficherEmp, 2, 0,)
+        self.btnAfficherEmp.setIcon(QIcon('liste.jpg'))
+        self.btnAfficherEmp.clicked.connect(self.btnAfficherEmpClicked)
+
+    def btnAfficherEmpClicked(self):
+        self.con = sqlite3.connect("mydb.db")
+        self.cur = self.con.cursor()
+        req = "SELECT * FROM emprunt"
         self.cur.execute(req)
         self.con.commit()
         self.resultat = self.cur.fetchall()
@@ -150,6 +195,7 @@ class FenAjouterAdh(QWidget):
         self.layout.addWidget(self.btnAjouterAdh, 3, 0, 3, 0)
         self.btnAjouterAdh.setIcon(QIcon('addadh.png'))
         self.btnAjouterAdh.clicked.connect(self.btnAjouterAdhClicked)
+
     def btnAjouterAdhClicked(self):
         self.con = sqlite3.connect("mydb.db")
         self.cur = self.con.cursor()
@@ -157,7 +203,9 @@ class FenAjouterAdh(QWidget):
         self.cur.execute(req)
         self.con.commit()
         QMessageBox.information(self,"Info","L'adhérent '"+self.lineEditNom.text() + "' '" +self.lineEditPrenom.text()+ "' est ajouté avec succés")
-
+        self.lineEditNom.clear()
+        self.lineEditPrenom.clear()
+        self.lineEditNumAdh.clear()
 class FenAjouterLiv(QWidget):
     def __init__(self):
         super().__init__()
@@ -200,6 +248,56 @@ class FenAjouterLiv(QWidget):
         self.cur.execute(req)
         self.con.commit()
         QMessageBox.information(self,"Info","Le livre '"+self.lineEditTitre.text() + "' est ajouté avec succés")
+        self.lineEditTitre.clear()
+        self.lineEditAuteur.clear()
+        self.lineEditNbrPages.clear()
+        self.lineEditISBN.clear()
+class FenAjouterEmp(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.widget = QWidget(self)
+        self.widget.setGeometry(50, 20, 450, 150)
+        # self.widget.resize(450,150)
+        self.setWindowTitle("Ajout d'emprunt")
+        #création de Grid layout
+        self.layout = QGridLayout(self)
+        self.widget.setLayout(self.layout)
+        #création de labels
+        self.label1 = QLabel("Ajouter un emprunt",self.widget)
+        self.layout.addWidget(self.label1, 0, 0)
+        self.label2 = QLabel("Titre",self.widget)
+        self.layout.addWidget(self.label2, 1, 0)
+        self.label3 = QLabel("Nom Adh",self.widget)
+        self.layout.addWidget(self.label3, 1, 1)
+        self.label4 = QLabel("ISBN",self.widget)
+        self.layout.addWidget(self.label4, 1, 2)
+        self.label5 = QLabel("Date",self.widget)
+        self.layout.addWidget(self.label5, 1, 3)
+        #création de zone de text
+        self.lineEditTitre = QLineEdit(self)
+        self.layout.addWidget(self.lineEditTitre, 2, 0)
+        self.lineEditNomAdh = QLineEdit(self)
+        self.layout.addWidget(self.lineEditNomAdh, 2, 1)
+        self.lineEditISBN = QLineEdit(self)
+        self.layout.addWidget(self.lineEditISBN, 2, 2)
+        self.lineEditDate = QLineEdit(self)
+        self.layout.addWidget(self.lineEditDate, 2, 3)
+        #Création de bouton d'ajout adhérent
+        self.btnAjouterEmp = QPushButton("Ajouter",self.widget)
+        self.layout.addWidget(self.btnAjouterEmp, 3, 0, 4, 0)
+        self.btnAjouterEmp.setIcon(QIcon('livre.png'))
+        self.btnAjouterEmp.clicked.connect(self.btnAjouterEmpClicked)
+    def btnAjouterEmpClicked(self):
+        self.con = sqlite3.connect("mydb.db")
+        self.cur = self.con.cursor()
+        req = "INSERT INTO emprunt VALUES(NULL, '"+self.lineEditTitre.text()+"', '"+self.lineEditNomAdh.text()+"', '"+self.lineEditISBN.text()+"','"+self.lineEditDate.text()+"')"
+        self.cur.execute(req)
+        self.con.commit()
+        QMessageBox.information(self,"Info","L'emprunt '"+self.lineEditTitre.text() + "' est ajouté avec succés")
+        self.lineEditTitre.clear()
+        self.lineEditNomAdh.clear()
+        self.lineEditISBN.clear()
+        self.lineEditDate.clear()
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -243,7 +341,7 @@ class MainWindow(QMainWindow):
         #Création de boutons Livre
         self.btnAjouterLiv = QPushButton("  Ajouter un livre",self.widget1)
         self.layout.addWidget(self.btnAjouterLiv, 1, 1)
-        self.btnAjouterLiv.setIcon(QIcon('addadh.png'))
+        self.btnAjouterLiv.setIcon(QIcon('livre.png'))
         self.btnAjouterLiv.clicked.connect(self.btnAjouterLivClicked)
         self.btnAfficherLiv = QPushButton("  Afficher liste des livres",self.widget1)
         self.layout.addWidget(self.btnAfficherLiv, 2, 1)
@@ -253,13 +351,15 @@ class MainWindow(QMainWindow):
         self.layout.addWidget(self.btnSupprimerLiv, 3, 1)
         self.btnSupprimerLiv.setIcon(QIcon('trash.png'))
 
-        #Création de boutons Livre
+        #Création de boutons Emprunt
         self.btnAjouterEmp = QPushButton("  Ajouter un emprunt",self.widget1)
         self.layout.addWidget(self.btnAjouterEmp, 1, 2)
-        self.btnAjouterEmp.setIcon(QIcon('addadh.png'))
+        self.btnAjouterEmp.setIcon(QIcon('emprunt.png'))
+        self.btnAjouterEmp.clicked.connect(self.btnAjouterEmpClicked)
         self.btnAfficherEmp = QPushButton("  Afficher liste des livres",self.widget1)
         self.layout.addWidget(self.btnAfficherEmp, 2, 2)
         self.btnAfficherEmp.setIcon(QIcon('liste.jpg'))
+        self.btnAfficherEmp.clicked.connect(self.btnAfficherEmpClicked)
         self.btnSupprimerEmp = QPushButton("  Supprimer un livre",self.widget1)
         self.layout.addWidget(self.btnSupprimerEmp, 3, 2)
         self.btnSupprimerEmp.setIcon(QIcon('trash.png'))
@@ -268,6 +368,7 @@ class MainWindow(QMainWindow):
         self.btnQuitter = QPushButton("  Quitter",self.widget1)
         self.layout.addWidget(self.btnQuitter, 4, 0, 3, 0)
         self.btnQuitter.setIcon(QIcon('quitter.jpg'))
+        self.btnQuitter.clicked.connect(self.btnQuitterClicked)
     def btnAjouterAdhClicked(self):
         self.w = FenAjouterAdh()
         self.w.show()
@@ -280,8 +381,14 @@ class MainWindow(QMainWindow):
     def btnAfficherLivClicked(self):
         self.w = FenAfficherLiv()
         self.w.show()
-
-
+    def btnAjouterEmpClicked(self):
+        self.w = FenAjouterEmp()
+        self.w.show()
+    def btnAfficherEmpClicked(self):
+        self.w = FenAfficherEmp()
+        self.w.show()
+    def btnQuitterClicked(self):
+        QCoreApplication.quit()
 
 
 # On crée une instance de l'application
