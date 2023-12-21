@@ -24,146 +24,6 @@ class BdTables:
         self.cur.close()
         self.con.close()
 #Création de classe de la fenetre ==Afficher liste des Adhérents == comme widget
-class FenAfficherAdh(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.widget = QWidget(self)
-        self.widget.resize(500,300)
-        self.setWindowTitle("Liste des adhérents")
-        #création de Grid layout
-        self.layout = QGridLayout(self)
-        self.widget.setLayout(self.layout)
-        #création de labels
-        self.label1 = QLabel("Liste des adhérents",self.widget)
-        self.layout.addWidget(self.label1, 0, 0)
-        #création de table
-        self.table = QTableWidget(self.widget)
-        self.layout.addWidget(self.table, 1, 0)
-        self.table.setColumnCount(4)
-        # self.table.setRowCount(3)
-        self.table.setHorizontalHeaderLabels(["AdhID", "Nom", "Prénom", "Numéro Adh"])
-        #Création de bouton --afficher la liste des adhérents---
-        self.btnAfficherAdh = QPushButton("  Afficher la liste des adhérents",self.widget)
-        self.layout.addWidget(self.btnAfficherAdh, 2, 0,)
-        self.btnAfficherAdh.setIcon(QIcon('liste.jpg'))
-        self.btnAfficherAdh.clicked.connect(self.btnAfficherAdhClicked)
-
-    def btnAfficherAdhClicked(self):
-        self.con = sqlite3.connect("mydb.db")
-        self.cur = self.con.cursor()
-        req = "SELECT * FROM adherent"
-        self.cur.execute(req)
-        self.con.commit()
-        self.resultat = self.cur.fetchall()
-        print(self.resultat)
-        print(len(self.resultat))
-        self.table.setRowCount(len(self.resultat))
-        # self.table.setItem(0, 0, QTableWidgetItem('1'))
-        i = 0
-        for x in self.resultat:
-            # print(x)
-            # # print(i)
-            j = 0
-            for y in x:
-                # print("i = ", i, "j = ", j)
-                # print(y)
-                self.table.setItem(i, j, QTableWidgetItem(str(y)))
-                j = j + 1
-            i = i + 1
-class FenAfficherLiv(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.widget = QWidget(self)
-        self.widget.resize(500,300)
-        self.setWindowTitle("Liste des livres")
-        #création de Grid layout
-        self.layout = QGridLayout(self)
-        self.widget.setLayout(self.layout)
-        #création de labels
-        self.label1 = QLabel("Liste des livres",self.widget)
-        self.layout.addWidget(self.label1, 0, 0)
-        #création de table
-        self.table = QTableWidget(self.widget)
-        self.layout.addWidget(self.table, 1, 0)
-        self.table.setColumnCount(4)
-        # self.table.setRowCount(3)
-        self.table.setHorizontalHeaderLabels(["LivreID", "Titre", "Auteur", "Nbr de pages", "ISBN"])
-        #Création de bouton --afficher la liste des adhérents---
-        self.btnAfficherLiv = QPushButton("  Afficher la liste des livres",self.widget)
-        self.layout.addWidget(self.btnAfficherLiv, 2, 0,)
-        self.btnAfficherLiv.setIcon(QIcon('liste.jpg'))
-        self.btnAfficherLiv.clicked.connect(self.btnAfficherLivClicked)
-
-    def btnAfficherLivClicked(self):
-        self.con = sqlite3.connect("mydb.db")
-        self.cur = self.con.cursor()
-        req = "SELECT * FROM livre"
-        self.cur.execute(req)
-        self.con.commit()
-        self.resultat = self.cur.fetchall()
-        print(self.resultat)
-        print(len(self.resultat))
-        self.table.setRowCount(len(self.resultat))
-        # self.table.setItem(0, 0, QTableWidgetItem('1'))
-        i = 0
-        for x in self.resultat:
-            # print(x)
-            # # print(i)
-            j = 0
-            for y in x:
-                # print("i = ", i, "j = ", j)
-                # print(y)
-                self.table.setItem(i, j, QTableWidgetItem(str(y)))
-                j = j + 1
-            i = i + 1
-class FenAfficherEmp(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.widget = QWidget(self)
-        self.widget.resize(500,300)
-        self.setWindowTitle("Liste des emprunts")
-        #création de Grid layout
-        self.layout = QGridLayout(self)
-        self.widget.setLayout(self.layout)
-        #création de labels
-        self.label1 = QLabel("Liste des emprunts",self.widget)
-        self.layout.addWidget(self.label1, 0, 0)
-        #création de table
-        self.table = QTableWidget(self.widget)
-        self.layout.addWidget(self.table, 1, 0)
-        self.table.setColumnCount(4)
-        # self.table.setRowCount(3)
-        self.table.setHorizontalHeaderLabels(["EmpruntID", "Titre", "Nom Adhérent", "ISBN", "Date"])
-        #Création de bouton --afficher la liste des adhérents---
-        self.btnAfficherEmp = QPushButton("  Afficher la liste des emprunts",self.widget)
-        self.layout.addWidget(self.btnAfficherEmp, 2, 0,)
-        self.btnAfficherEmp.setIcon(QIcon('liste.jpg'))
-        self.btnAfficherEmp.clicked.connect(self.btnAfficherEmpClicked)
-
-    def btnAfficherEmpClicked(self):
-        self.con = sqlite3.connect("mydb.db")
-        self.cur = self.con.cursor()
-        req = "SELECT * FROM emprunt"
-        self.cur.execute(req)
-        self.con.commit()
-        self.resultat = self.cur.fetchall()
-        print(self.resultat)
-        print(len(self.resultat))
-        self.table.setRowCount(len(self.resultat))
-        # self.table.setItem(0, 0, QTableWidgetItem('1'))
-        i = 0
-        for x in self.resultat:
-            # print(x)
-            # # print(i)
-            j = 0
-            for y in x:
-                # print("i = ", i, "j = ", j)
-                # print(y)
-                self.table.setItem(i, j, QTableWidgetItem(str(y)))
-                j = j + 1
-            i = i + 1
-
-#Création de classe de la fenetre ==Ajout Adhérent == comme widget
 class FenAjouterAdh(QWidget):
     def __init__(self):
         super().__init__()
@@ -298,6 +158,426 @@ class FenAjouterEmp(QWidget):
         self.lineEditNomAdh.clear()
         self.lineEditISBN.clear()
         self.lineEditDate.clear()
+class FenAfficherAdh(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.widget = QWidget(self)
+        self.widget.resize(500,300)
+        self.setWindowTitle("Liste des adhérents")
+        #création de Grid layout
+        self.layout = QGridLayout(self)
+        self.widget.setLayout(self.layout)
+        #création de labels
+        self.label1 = QLabel("Liste des adhérents",self.widget)
+        self.layout.addWidget(self.label1, 0, 0)
+        #création de table
+        self.table = QTableWidget(self.widget)
+        self.layout.addWidget(self.table, 1, 0)
+        self.table.setColumnCount(4)
+        # self.table.setRowCount(3)
+        self.table.setHorizontalHeaderLabels(["AdhID", "Nom", "Prénom", "Numéro Adh"])
+        #Création de bouton --afficher la liste des adhérents---
+        self.btnAfficherAdh = QPushButton("  Afficher la liste des adhérents",self.widget)
+        self.layout.addWidget(self.btnAfficherAdh, 2, 0,)
+        self.btnAfficherAdh.setIcon(QIcon('liste.jpg'))
+        self.btnAfficherAdh.clicked.connect(self.btnAfficherAdhClicked)
+
+    def btnAfficherAdhClicked(self):
+        self.con = sqlite3.connect("mydb.db")
+        self.cur = self.con.cursor()
+        req = "SELECT * FROM adherent"
+        self.cur.execute(req)
+        self.con.commit()
+        self.resultat = self.cur.fetchall()
+        print(self.resultat)
+        print(len(self.resultat))
+        self.table.setRowCount(len(self.resultat))
+        # self.table.setItem(0, 0, QTableWidgetItem('1'))
+        i = 0
+        for x in self.resultat:
+            # print(x)
+            # # print(i)
+            j = 0
+            for y in x:
+                # print("i = ", i, "j = ", j)
+                # print(y)
+                self.table.setItem(i, j, QTableWidgetItem(str(y)))
+                j = j + 1
+            i = i + 1
+class FenAfficherLiv(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.widget = QWidget(self)
+        self.widget.resize(500,300)
+        self.setWindowTitle("Liste des livres")
+        #création de Grid layout
+        self.layout = QGridLayout(self)
+        self.widget.setLayout(self.layout)
+        #création de labels
+        self.label1 = QLabel("Liste des livres",self.widget)
+        self.layout.addWidget(self.label1, 0, 0)
+        #création de table
+        self.table = QTableWidget(self.widget)
+        self.layout.addWidget(self.table, 1, 0)
+        self.table.setColumnCount(4)
+        # self.table.setRowCount(3)
+        self.table.setHorizontalHeaderLabels(["LivreID", "Titre", "Auteur", "Nbr de pages", "ISBN"])
+        #Création de bouton --afficher la liste des adhérents---
+        self.btnAfficherLiv = QPushButton("  Afficher la liste des livres",self.widget)
+        self.layout.addWidget(self.btnAfficherLiv, 2, 0,)
+        self.btnAfficherLiv.setIcon(QIcon('liste.jpg'))
+        self.btnAfficherLiv.clicked.connect(self.btnAfficherLivClicked)
+
+    def btnAfficherLivClicked(self):
+        self.con = sqlite3.connect("mydb.db")
+        self.cur = self.con.cursor()
+        req = "SELECT * FROM livre"
+        self.cur.execute(req)
+        self.con.commit()
+        self.resultat = self.cur.fetchall()
+        print(self.resultat)
+        print(len(self.resultat))
+        self.table.setRowCount(len(self.resultat))
+        # self.table.setItem(0, 0, QTableWidgetItem('1'))
+        i = 0
+        for x in self.resultat:
+            # print(x)
+            # # print(i)
+            j = 0
+            for y in x:
+                # print("i = ", i, "j = ", j)
+                # print(y)
+                self.table.setItem(i, j, QTableWidgetItem(str(y)))
+                j = j + 1
+            i = i + 1
+class FenAfficherEmp(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.widget = QWidget(self)
+        self.widget.resize(500,300)
+        self.setWindowTitle("Liste des emprunts")
+        #création de Grid layout
+        self.layout = QGridLayout(self)
+        self.widget.setLayout(self.layout)
+        #création de labels
+        self.label1 = QLabel("Liste des emprunts",self.widget)
+        self.layout.addWidget(self.label1, 0, 0)
+        #création de table
+        self.table = QTableWidget(self.widget)
+        self.layout.addWidget(self.table, 1, 0)
+        self.table.setColumnCount(5)
+        # self.table.setRowCount(3)
+        self.table.setHorizontalHeaderLabels(["EmpruntID", "Titre", "Nom Adhérent", "ISBN", "Date"])
+        #Création de bouton --afficher la liste des adhérents---
+        self.btnAfficherEmp = QPushButton("  Afficher la liste des emprunts",self.widget)
+        self.layout.addWidget(self.btnAfficherEmp, 2, 0,)
+        self.btnAfficherEmp.setIcon(QIcon('liste.jpg'))
+        self.btnAfficherEmp.clicked.connect(self.btnAfficherEmpClicked)
+
+    def btnAfficherEmpClicked(self):
+        self.con = sqlite3.connect("mydb.db")
+        self.cur = self.con.cursor()
+        req = "SELECT * FROM emprunt"
+        self.cur.execute(req)
+        self.con.commit()
+        self.resultat = self.cur.fetchall()
+        print(self.resultat)
+        print(len(self.resultat))
+        self.table.setRowCount(len(self.resultat))
+        # self.table.setItem(0, 0, QTableWidgetItem('1'))
+        i = 0
+        for x in self.resultat:
+            # print(x)
+            # # print(i)
+            j = 0
+            for y in x:
+                # print("i = ", i, "j = ", j)
+                # print(y)
+                self.table.setItem(i, j, QTableWidgetItem(str(y)))
+                j = j + 1
+            i = i + 1
+class FenChoisirAdh(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.widget = QWidget(self)
+        self.widget.resize(500,300)
+        self.setWindowTitle("Choix d'adhérent à supprimer")
+        #création de Grid layout
+        self.layout = QGridLayout(self)
+        self.widget.setLayout(self.layout)
+        #création de labels
+        self.label1 = QLabel("Liste des adhérents",self.widget)
+        self.layout.addWidget(self.label1, 0, 0, 1, 0)
+        # self.label2 = QLabel("",self.widget)
+        # self.layout.addWidget(self.label2, 0, 1)
+        #création de table
+        self.table = QTableWidget(self.widget)
+        self.layout.addWidget(self.table, 1, 0, 1, 0)
+        self.table.setColumnCount(4)
+        # self.table.setRowCount(3)
+        self.table.setHorizontalHeaderLabels(["AdhID", "Nom", "Prénom", "Numéro Adh"])
+
+        #Création de bouton -- Supprimer un adhérent---
+        self.btnAfficherAdh = QPushButton("  Afficher la liste des adhérents",self.widget)
+        self.layout.addWidget(self.btnAfficherAdh, 2, 0)
+        self.btnAfficherAdh.setIcon(QIcon('liste.jpg'))
+        self.btnAfficherAdh.clicked.connect(self.btnAfficherAdhClicked)
+        self.btnSupprimerAdh = QPushButton("  Choisir l'adhérent à supprimer",self.widget)
+        self.layout.addWidget(self.btnSupprimerAdh, 2, 1)
+        self.btnSupprimerAdh.setIcon(QIcon('trash.png'))
+        self.btnSupprimerAdh.clicked.connect(self.btnSupprimerAdhClicked)
+
+    def btnAfficherAdhClicked(self):
+        self.con = sqlite3.connect("mydb.db")
+        self.cur = self.con.cursor()
+        req = "SELECT * FROM adherent"
+        self.cur.execute(req)
+        self.con.commit()
+        self.resultat = self.cur.fetchall()
+        print(self.resultat)
+        print(len(self.resultat))
+        self.table.setRowCount(len(self.resultat))
+        # self.table.setItem(0, 0, QTableWidgetItem('1'))
+        i = 0
+        for x in self.resultat:
+            # print(x)
+            # # print(i)
+            j = 0
+            for y in x:
+                # print("i = ", i, "j = ", j)
+                # print(y)
+                self.table.setItem(i, j, QTableWidgetItem(str(y)))
+                j = j + 1
+            i = i + 1
+    def btnSupprimerAdhClicked(self):
+        self.w = FenSupprimerAdh()
+        self.w.show()
+class FenSupprimerAdh(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.widget = QWidget(self)
+        self.widget.resize(300,150)
+        self.setWindowTitle("Suppression d'adhérent")
+        #création de Grid layout
+        self.layout = QGridLayout(self)
+        self.widget.setLayout(self.layout)
+        #création de labels
+        self.label1 = QLabel("Entrer le numéro d'adhérent à supprimer",self.widget)
+        self.layout.addWidget(self.label1, 0, 0)
+        self.lineEditNum = QLineEdit(self)
+        self.layout.addWidget(self.lineEditNum, 1, 0)
+        self.btnSupprimerFinalAdh = QPushButton("Supprimer", self.widget)
+        self.layout.addWidget(self.btnSupprimerFinalAdh, 2, 0)
+        self.btnSupprimerFinalAdh.clicked.connect(self.btnSupprimerFinalAdhClicked)
+
+
+    def btnSupprimerFinalAdhClicked(self):
+        self.con = sqlite3.connect("mydb.db")
+        self.cur =self.con.cursor()
+        req = "SELECT * FROM adherent WHERE(adhID == '"+self.lineEditNum.text()+"')"
+        self.cur.execute(req)
+        self.con.commit()
+        self.resultat = self.cur.fetchall()
+        print(len(self.resultat))
+        if len(self.resultat) == 1:
+            req1 = "DELETE FROM adherent WHERE(adhID == '"+self.lineEditNum.text()+"')"
+            self.cur.execute(req1)
+            self.con.commit()
+            QMessageBox.information(self,"Info","L'adhérent numéro '"+ self.lineEditNum.text() + "' est supprimé avec succés")
+            self.lineEditNum.clear()
+            self.cur.close()
+            self.con.close()
+        else:
+            QMessageBox.warning(self,"Warning","Ce numéro d'adhérent n'existe pas, saisir un numéro valide")
+            self.lineEditNum.clear()
+class FenChoisirLiv(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.widget = QWidget(self)
+        self.widget.resize(500,300)
+        self.setWindowTitle("Choix de livre à supprimer")
+        #création de Grid layout
+        self.layout = QGridLayout(self)
+        self.widget.setLayout(self.layout)
+        #création de labels
+        self.label1 = QLabel("Liste des livres",self.widget)
+        self.layout.addWidget(self.label1, 0, 0, 1, 0)
+        # self.label2 = QLabel("",self.widget)
+        # self.layout.addWidget(self.label2, 0, 1)
+        #création de table
+        self.table = QTableWidget(self.widget)
+        self.layout.addWidget(self.table, 1, 0, 1, 0)
+        self.table.setColumnCount(4)
+        # self.table.setRowCount(3)
+        self.table.setHorizontalHeaderLabels(["LivreID", "Titre", "Auteur", "Nbr de pages", "ISBN"])
+
+        #Création de bouton -- Supprimer un adhérent---
+        self.btnAfficherLiv = QPushButton("  Afficher la liste des livres",self.widget)
+        self.layout.addWidget(self.btnAfficherLiv, 2, 0)
+        self.btnAfficherLiv.setIcon(QIcon('liste.jpg'))
+        self.btnAfficherLiv.clicked.connect(self.btnAfficherLivClicked)
+        self.btnSupprimerLiv = QPushButton("  Choisir le livre à supprimer",self.widget)
+        self.layout.addWidget(self.btnSupprimerLiv, 2, 1)
+        self.btnSupprimerLiv.setIcon(QIcon('trash.png'))
+        self.btnSupprimerLiv.clicked.connect(self.btnSupprimerLivClicked)
+
+    def btnAfficherLivClicked(self):
+        self.con = sqlite3.connect("mydb.db")
+        self.cur = self.con.cursor()
+        req = "SELECT * FROM livre"
+        self.cur.execute(req)
+        self.con.commit()
+        self.resultat = self.cur.fetchall()
+        print(self.resultat)
+        print(len(self.resultat))
+        self.table.setRowCount(len(self.resultat))
+        # self.table.setItem(0, 0, QTableWidgetItem('1'))
+        i = 0
+        for x in self.resultat:
+            # print(x)
+            # # print(i)
+            j = 0
+            for y in x:
+                # print("i = ", i, "j = ", j)
+                # print(y)
+                self.table.setItem(i, j, QTableWidgetItem(str(y)))
+                j = j + 1
+            i = i + 1
+    def btnSupprimerLivClicked(self):
+        self.w = FenSupprimerLiv()
+        self.w.show()
+class FenSupprimerLiv(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.widget = QWidget(self)
+        self.widget.resize(300,150)
+        self.setWindowTitle("Suppression de livre")
+        #création de Grid layout
+        self.layout = QGridLayout(self)
+        self.widget.setLayout(self.layout)
+        #création de labels
+        self.label1 = QLabel("Entrer le numéro de livre à supprimer",self.widget)
+        self.layout.addWidget(self.label1, 0, 0)
+        self.lineEditNum = QLineEdit(self)
+        self.layout.addWidget(self.lineEditNum, 1, 0)
+        self.btnSupprimerFinalLiv = QPushButton("Supprimer", self.widget)
+        self.layout.addWidget(self.btnSupprimerFinalLiv, 2, 0)
+        self.btnSupprimerFinalLiv.clicked.connect(self.btnSupprimerFinalLivClicked)
+
+    def btnSupprimerFinalLivClicked(self):
+        self.con = sqlite3.connect("mydb.db")
+        self.cur =self.con.cursor()
+        req = "SELECT * FROM livre WHERE(livreID == '"+self.lineEditNum.text()+"')"
+        self.cur.execute(req)
+        self.con.commit()
+        self.resultat = self.cur.fetchall()
+        print(len(self.resultat))
+        if len(self.resultat) == 1:
+            req1 = "DELETE FROM livre WHERE(livreID == '"+self.lineEditNum.text()+"')"
+            self.cur.execute(req1)
+            self.con.commit()
+            QMessageBox.information(self,"Info","Le livre numéro '"+ self.lineEditNum.text() + "' est supprimé avec succés")
+            self.lineEditNum.clear()
+            self.cur.close()
+            self.con.close()
+        else:
+            QMessageBox.warning(self,"Warning","Ce numéro de livre n'existe pas, saisir un numéro valide")
+            self.lineEditNum.clear()
+class FenChoisirEmp(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.widget = QWidget(self)
+        self.widget.resize(500,300)
+        self.setWindowTitle("Choix de l'emprunt à supprimer")
+        #création de Grid layout
+        self.layout = QGridLayout(self)
+        self.widget.setLayout(self.layout)
+        #création de labels
+        self.label1 = QLabel("Liste des emprunts",self.widget)
+        self.layout.addWidget(self.label1, 0, 0, 1, 0)
+        self.label2 = QLabel("",self.widget)
+        self.layout.addWidget(self.label2, 0, 1)
+        #création de table
+        self.table = QTableWidget(self.widget)
+        self.layout.addWidget(self.table, 1, 0, 1, 0)
+        self.table.setColumnCount(5)
+        # self.table.setRowCount(3)
+        self.table.setHorizontalHeaderLabels(["empruntID", "Titre", "nom Adh", "ISBN", "Date"])
+
+        #Création de bouton -- Supprimer un adhérent---
+        self.btnAfficherEmp = QPushButton("  Afficher la liste des emprunts", self.widget)
+        self.layout.addWidget(self.btnAfficherEmp, 2, 0)
+        self.btnAfficherEmp.setIcon(QIcon('liste.jpg'))
+        self.btnAfficherEmp.clicked.connect(self.btnAfficherEmpClicked)
+
+        self.btnSupprimerEmp = QPushButton("  Choisir l'emprunt à supprimer",self.widget)
+        self.layout.addWidget(self.btnSupprimerEmp, 2, 1)
+        self.btnSupprimerEmp.setIcon(QIcon('trash.png'))
+        self.btnSupprimerEmp.clicked.connect(self.btnSupprimerEmpClicked)
+
+    def btnAfficherEmpClicked(self):
+        self.con = sqlite3.connect("mydb.db")
+        self.cur = self.con.cursor()
+        req = "SELECT * FROM emprunt"
+        self.cur.execute(req)
+        self.con.commit()
+        self.resultat = self.cur.fetchall()
+        print(self.resultat)
+        print(len(self.resultat))
+        self.table.setRowCount(len(self.resultat))
+        # self.table.setItem(0, 0, QTableWidgetItem('1'))
+        i = 0
+        for x in self.resultat:
+            # print(x)
+            # # print(i)
+            j = 0
+            for y in x:
+                # print("i = ", i, "j = ", j)
+                # print(y)
+                self.table.setItem(i, j, QTableWidgetItem(str(y)))
+                j = j + 1
+            i = i + 1
+    def btnSupprimerEmpClicked(self):
+        self.w = FenSupprimerEmp()
+        self.w.show()
+class FenSupprimerEmp(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.widget = QWidget(self)
+        self.widget.resize(300,150)
+        self.setWindowTitle("Suppression d'emprunt'")
+        #création de Grid layout
+        self.layout = QGridLayout(self)
+        self.widget.setLayout(self.layout)
+        #création de labels
+        self.label1 = QLabel("Entrer le numéro d'emprunt à supprimer",self.widget)
+        self.layout.addWidget(self.label1, 0, 0)
+        self.lineEditNum = QLineEdit(self)
+        self.layout.addWidget(self.lineEditNum, 1, 0)
+        self.btnSupprimerFinalEmp = QPushButton("Supprimer", self.widget)
+        self.layout.addWidget(self.btnSupprimerFinalEmp, 2, 0)
+        self.btnSupprimerFinalEmp.clicked.connect(self.btnSupprimerFinalEmpClicked)
+
+    def btnSupprimerFinalEmpClicked(self):
+        self.con = sqlite3.connect("mydb.db")
+        self.cur =self.con.cursor()
+        req = "SELECT * FROM emprunt WHERE(empruntID == '"+self.lineEditNum.text()+"')"
+        self.cur.execute(req)
+        self.con.commit()
+        self.resultat = self.cur.fetchall()
+        print(len(self.resultat))
+        if len(self.resultat) == 1:
+            req1 = "DELETE FROM emprunt WHERE(empruntID == '"+self.lineEditNum.text()+"')"
+            self.cur.execute(req1)
+            self.con.commit()
+            QMessageBox.information(self,"Info","L'emprunt' numéro '"+ self.lineEditNum.text() + "' est supprimé avec succés")
+            self.lineEditNum.clear()
+            self.cur.close()
+            self.con.close()
+        else:
+            QMessageBox.warning(self,"Warning","Ce numéro d'emprunt' n'existe pas, saisir un numéro valide")
+            self.lineEditNum.clear()
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow,self).__init__()
@@ -324,44 +604,53 @@ class MainWindow(QMainWindow):
         self.layout.addWidget(self.label1, 0, 2, alignment=Qt.AlignmentFlag.AlignCenter)
 
         #Création des boutons
-        #Création de boutons Adhérent
+        #============ Boutons Adhérent ==========================
         self.btnAjouterAdh = QPushButton("  Ajouter un adéhrent",self.widget1)
         self.layout.addWidget(self.btnAjouterAdh, 1, 0)
         self.btnAjouterAdh.setIcon(QIcon('addadh.png'))
         self.btnAjouterAdh.clicked.connect(self.btnAjouterAdhClicked)
+
         self.btnAfficherAdh = QPushButton("  Afficher liste des adéhrents",self.widget1)
         self.layout.addWidget(self.btnAfficherAdh, 2, 0)
         self.btnAfficherAdh.setIcon(QIcon('liste.jpg'))
-        self.btnSupprimerAdh = QPushButton("  Supprimer un adéhrents",self.widget1)
-        self.layout.addWidget(self.btnSupprimerAdh, 3, 0)
-        self.btnSupprimerAdh.setIcon(QIcon('trash.png'))
         self.btnAfficherAdh.clicked.connect(self.btnAfficherAdhClicked)
 
-        #Création de boutons Livre
+        self.btnChoisirAdh = QPushButton("  Supprimer un Adhérent",self.widget1)
+        self.layout.addWidget(self.btnChoisirAdh, 3, 0)
+        self.btnChoisirAdh.setIcon(QIcon('trash.png'))
+        self.btnChoisirAdh.clicked.connect(self.btnChoisirAdhClicked)
+
+        #========== boutons Livre ======================
         self.btnAjouterLiv = QPushButton("  Ajouter un livre",self.widget1)
         self.layout.addWidget(self.btnAjouterLiv, 1, 1)
         self.btnAjouterLiv.setIcon(QIcon('livre.png'))
         self.btnAjouterLiv.clicked.connect(self.btnAjouterLivClicked)
+
         self.btnAfficherLiv = QPushButton("  Afficher liste des livres",self.widget1)
         self.layout.addWidget(self.btnAfficherLiv, 2, 1)
         self.btnAfficherLiv.setIcon(QIcon('liste.jpg'))
         self.btnAfficherLiv.clicked.connect(self.btnAfficherLivClicked)
-        self.btnSupprimerLiv = QPushButton("  Supprimer un livre",self.widget1)
-        self.layout.addWidget(self.btnSupprimerLiv, 3, 1)
-        self.btnSupprimerLiv.setIcon(QIcon('trash.png'))
 
-        #Création de boutons Emprunt
+        self.btnChoisirLiv = QPushButton("  Supprimer un livre",self.widget1)
+        self.layout.addWidget(self.btnChoisirLiv, 3, 1)
+        self.btnChoisirLiv.setIcon(QIcon('trash.png'))
+        self.btnChoisirLiv.clicked.connect(self.btnChoisirLivClicked)
+
+        # ================== boutons Emprunt ======================
         self.btnAjouterEmp = QPushButton("  Ajouter un emprunt",self.widget1)
         self.layout.addWidget(self.btnAjouterEmp, 1, 2)
         self.btnAjouterEmp.setIcon(QIcon('emprunt.png'))
         self.btnAjouterEmp.clicked.connect(self.btnAjouterEmpClicked)
+
         self.btnAfficherEmp = QPushButton("  Afficher liste des emprunts",self.widget1)
         self.layout.addWidget(self.btnAfficherEmp, 2, 2)
         self.btnAfficherEmp.setIcon(QIcon('liste.jpg'))
         self.btnAfficherEmp.clicked.connect(self.btnAfficherEmpClicked)
-        self.btnSupprimerEmp = QPushButton("  Supprimer un emprunt",self.widget1)
-        self.layout.addWidget(self.btnSupprimerEmp, 3, 2)
-        self.btnSupprimerEmp.setIcon(QIcon('trash.png'))
+
+        self.btnChoisirEmp = QPushButton("  Supprimer un emprunt",self.widget1)
+        self.layout.addWidget(self.btnChoisirEmp, 3, 2)
+        self.btnChoisirEmp.setIcon(QIcon('trash.png'))
+        self.btnChoisirEmp.clicked.connect(self.btnChoisirEmpClicked)
 
         #Création de bouton Quitter
         self.btnQuitter = QPushButton("  Quitter",self.widget1)
@@ -385,6 +674,15 @@ class MainWindow(QMainWindow):
         self.w.show()
     def btnAfficherEmpClicked(self):
         self.w = FenAfficherEmp()
+        self.w.show()
+    def btnChoisirAdhClicked(self):
+        self.w = FenChoisirAdh()
+        self.w.show()
+    def btnChoisirLivClicked(self):
+        self.w = FenChoisirLiv()
+        self.w.show()
+    def btnChoisirEmpClicked(self):
+        self.w = FenChoisirEmp()
         self.w.show()
     def btnQuitterClicked(self):
         QCoreApplication.quit()
