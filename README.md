@@ -4,7 +4,7 @@
 Permet de faire les tâches suivantes:
 ## Adhérents
 - Ajouter un adhérent
-  ![image](https://github.com/Mohssine15/Biblio_Graphical_version/assets/146738652/2973d30e-73fa-48ea-b61c-d5f98b3afbcb)
+- ![image](https://github.com/Mohssine15/Biblio_Graphical_version/assets/146738652/2973d30e-73fa-48ea-b61c-d5f98b3afbcb)
 
 - Afficher la liste des adhérents
   ![image](https://github.com/Mohssine15/Biblio_Graphical_version/assets/146738652/1bbe0cd2-6495-4e0d-9038-0e8753d3c94e)
